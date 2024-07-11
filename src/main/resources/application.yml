@@ -1,11 +1,4 @@
 spring:
-  application:
-    name: Mission-3-HealthCare_BackEnd
-  jpa:
-    hibernate:
-      ddl-auto: update
-  datasource:
-    driverClassName: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://localhost:3306/SampleDB
-    username: root
-    password: hee41876455
+  config:
+    import:
+      - database.yml
