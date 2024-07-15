@@ -408,7 +408,7 @@ class DietControllerTest {
 	}
 
 	@Test
-	@DisplayName("사진 저장 테스트")
+  @DisplayName("사진 저장 테스트")
 	void saveImageTest() throws Exception {
 		// Given
 		MockMultipartFile file = new MockMultipartFile("images", "Test.png", "image/png", "사진내용".getBytes());

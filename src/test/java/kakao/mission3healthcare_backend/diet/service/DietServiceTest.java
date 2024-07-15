@@ -16,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import kakao.mission3healthcare_backend.auth.domain.entity.Member;
+
 import kakao.mission3healthcare_backend.common.service.CommonService;
 import kakao.mission3healthcare_backend.diet.domain.MealType;
 import kakao.mission3healthcare_backend.diet.domain.NutrientType;
@@ -69,8 +70,7 @@ class DietServiceTest {
 	@DisplayName("식단 추가 테스트 (성공)")
 	void addDiet() {
 	    // Given
-		DietRequest dietRequest = new DietRequest("testId", MealType.BREAKFAST, List.of("김치", "라면"), LocalDate.of(2024, 1, 1), null);
-		Member member = Member.builder().username("testId").build();
+		DietRequest dietRequest = new DietRequest("testId", MealType.BREAKFAST, List.of("김치", "라면"), LocalDate.of(2024, 1, 1), null);		Member member = Member.builder().username("testId").build();
 		given(commonService.findMember("testId", true)).willReturn(member);
 
 	    // When
