@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.transaction.annotation.Transactional;
 
+import jakarta.persistence.EntityManager;
 import kakao.mission3healthcare_backend.activity.domain.entity.Walk;
 import kakao.mission3healthcare_backend.auth.domain.entity.Member;
 import kakao.mission3healthcare_backend.auth.repository.MemberRepository;
@@ -29,6 +30,7 @@ class WalkRepositoryTest {
 
 	@Autowired WalkRepository walkRepository;
 	@Autowired MemberRepository memberRepository;
+	@Autowired EntityManager em;
 
 	@Test
 	@DisplayName("활동(걷기) 저장 테스트")
@@ -108,6 +110,30 @@ class WalkRepositoryTest {
 		assertEquals(143.2, result.get(2).getAvgHeartRate());
 		assertEquals(144.2, result.get(3).getAvgHeartRate());
 		assertEquals(145.2, result.get(4).getAvgHeartRate());
+	}
+
+	@Test
+	@DisplayName("활동(걷기) 수정 테스트")
+	void updateTest() {
+		// Given
+		Member member = Member.builder().username("testId").build();
+		memberRepository.save(member);
+		Walk walk = new Walk(1.4, 141.2, LocalDate.of(2024, 1, 1), member);
+		walkRepository.save(walk);
+
+		// When
+		Walk getWalk = walkRepository.findById(walk.getId()).get();
+		getWalk.updateWalk(10.0, 20.0, LocalDate.of(2025, 1, 1));
+
+		em.flush();
+		em.clear();
+
+		Walk result = walkRepository.findById(getWalk.getId()).get();
+
+		// Then
+		assertEquals(10.0, result.getDistance());
+		assertEquals(20.0, result.getAvgHeartRate());
+		assertEquals(LocalDate.of(2025, 1, 1), result.getWalkDate());
 	}
 
 	@Test
