@@ -2,6 +2,7 @@ package kakao.mission3healthcare_backend.activity.repository;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,7 +37,7 @@ class WalkRepositoryTest {
 		Member member = Member.builder().username("testId").build();
 		memberRepository.save(member);
 
-		Walk walk = new Walk(1.4, 141.2, member);
+		Walk walk = new Walk(1.4, 141.2, LocalDate.of(2024, 1, 1), member);
 
 		// When
 		walkRepository.save(walk);
@@ -57,11 +58,11 @@ class WalkRepositoryTest {
 		Member member = Member.builder().username("testId").build();
 		memberRepository.save(member);
 
-		Walk walk1 = new Walk(1.4, 141.2, member);
-		Walk walk2 = new Walk(2.4, 142.2, member);
-		Walk walk3 = new Walk(3.4, 143.2, member);
-		Walk walk4 = new Walk(4.4, 144.2, member);
-		Walk walk5 = new Walk(5.4, 145.2, member);
+		Walk walk1 = new Walk(1.4, 141.2, LocalDate.of(2024, 1, 1), member);
+		Walk walk2 = new Walk(2.4, 142.2, LocalDate.of(2024, 1, 2), member);
+		Walk walk3 = new Walk(3.4, 143.2, LocalDate.of(2024, 1, 3), member);
+		Walk walk4 = new Walk(4.4, 144.2, LocalDate.of(2024, 1, 4), member);
+		Walk walk5 = new Walk(5.4, 145.2, LocalDate.of(2024, 1, 5), member);
 
 		walkRepository.save(walk1);
 		walkRepository.save(walk2);
@@ -78,13 +79,45 @@ class WalkRepositoryTest {
 	}
 
 	@Test
+	@DisplayName("회원ID와 날짜로 활동(걷기) 조회")
+	void DietRepositoryTest() {
+		// Given
+		Member member = Member.builder().username("testId").build();
+		memberRepository.save(member);
+
+		Walk walk1 = new Walk(1.4, 141.2, LocalDate.of(2024, 1, 1), member);
+		Walk walk2 = new Walk(2.4, 142.2, LocalDate.of(2024, 1, 1), member);
+		Walk walk3 = new Walk(3.4, 143.2, LocalDate.of(2024, 1, 1), member);
+		Walk walk4 = new Walk(4.4, 144.2, LocalDate.of(2024, 1, 1), member);
+		Walk walk5 = new Walk(5.4, 145.2, LocalDate.of(2024, 1, 1), member);
+
+		walkRepository.save(walk1);
+		walkRepository.save(walk2);
+		walkRepository.save(walk3);
+		walkRepository.save(walk4);
+		walkRepository.save(walk5);
+
+		// When
+		List<Walk> result = walkRepository.findByUsernameAndDate("testId", LocalDate.of(2024, 1, 1));
+
+		// Then
+		assertEquals(5, result.size());
+		assertEquals(LocalDate.of(2024, 1, 1), result.get(0).getWalkDate());
+		assertEquals(141.2, result.get(0).getAvgHeartRate());
+		assertEquals(142.2, result.get(1).getAvgHeartRate());
+		assertEquals(143.2, result.get(2).getAvgHeartRate());
+		assertEquals(144.2, result.get(3).getAvgHeartRate());
+		assertEquals(145.2, result.get(4).getAvgHeartRate());
+	}
+
+	@Test
 	@DisplayName("활동(걷기) 삭제 테스트")
 	void deleteTest() {
 		// Given
 		Member member = Member.builder().username("testId").build();
 		memberRepository.save(member);
 
-		Walk walk = new Walk(1.4, 141.2, member);
+		Walk walk = new Walk(1.4, 141.2, LocalDate.of(2024, 1, 1), member);
 		walkRepository.save(walk);
 
 		// When
