@@ -1,5 +1,7 @@
 package kakao.mission3healthcare_backend.activity.domain.entity;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import kakao.mission3healthcare_backend.auth.domain.entity.Member;
@@ -20,10 +22,18 @@ public class Walk extends Activity {
 
 	private Double distance; // 거리
 	private Double avgHeartRate; // 평균 심박수
+	private LocalDate walkDate; // 활동 날짜
 
-	public Walk(Double distance, Double avgHeartRate, Member member) {
+	public void updateWalk(Double distance, Double avgHeartRate, LocalDate walkDate) {
+		this.distance = distance;
+		this.avgHeartRate = avgHeartRate;
+		this.walkDate = walkDate;
+	}
+
+	public Walk(Double distance, Double avgHeartRate, LocalDate walkDate, Member member) {
 		super(member);
 		this.distance = distance;
 		this.avgHeartRate = avgHeartRate;
+		this.walkDate = walkDate;
 	}
 }
