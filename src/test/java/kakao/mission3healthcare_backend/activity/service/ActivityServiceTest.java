@@ -162,8 +162,10 @@ class ActivityServiceTest {
 
 		given(walkRepository.findByUsername("testId")).willReturn(List.of(walk1, walk2, walk3, walk4, walk5));
 
+		// When
 		List<WalkResponse> result = activityService.findByUsername("testId");
 
+		// Then
 		assertEquals(5, result.size());
 		assertEquals(1.1, result.get(0).getDistance());
 		assertEquals(110.0, result.get(0).getAvgHeartRate());
@@ -188,6 +190,51 @@ class ActivityServiceTest {
 		assertEquals(5.5, result.get(4).getDistance());
 		assertEquals(150.0, result.get(4).getAvgHeartRate());
 		assertEquals(LocalDate.of(2024, 5, 1), result.get(4).getWalkDate());
+		assertEquals("testId", result.get(4).getUsername());
+	}
+
+	@Test
+	@DisplayName("한 회원의 정보와 날짜 정보로 걷기 정보 불러오기")
+	void findByUsernameAndDate() {
+	    // Given
+		Member member = Member.builder().username("testId").build();
+		Walk walk1 = new Walk(1.1, 110.0, LocalDate.of(2024, 1, 1), member);
+		Walk walk2 = new Walk(2.2, 120.0, LocalDate.of(2024, 1, 1), member);
+		Walk walk3 = new Walk(3.3, 130.0, LocalDate.of(2024, 1, 1), member);
+		Walk walk4 = new Walk(4.4, 140.0, LocalDate.of(2024, 1, 1), member);
+		Walk walk5 = new Walk(5.5, 150.0, LocalDate.of(2024, 1, 1), member);
+
+		given(walkRepository.findByUsernameAndDate("testId", LocalDate.of(2024, 1, 1))).willReturn(List.of(walk1, walk2, walk3, walk4, walk5));
+
+
+		// When
+		List<WalkResponse> result = activityService.findByUsernameAndDate("testId", LocalDate.of(2024, 1, 1));
+
+	    // Then
+		assertEquals(5, result.size());
+		assertEquals(1.1, result.get(0).getDistance());
+		assertEquals(110.0, result.get(0).getAvgHeartRate());
+		assertEquals(LocalDate.of(2024, 1, 1), result.get(0).getWalkDate());
+		assertEquals("testId", result.get(0).getUsername());
+
+		assertEquals(2.2, result.get(1).getDistance());
+		assertEquals(120.0, result.get(1).getAvgHeartRate());
+		assertEquals(LocalDate.of(2024, 1, 1), result.get(1).getWalkDate());
+		assertEquals("testId", result.get(1).getUsername());
+
+		assertEquals(3.3, result.get(2).getDistance());
+		assertEquals(130.0, result.get(2).getAvgHeartRate());
+		assertEquals(LocalDate.of(2024, 1, 1), result.get(2).getWalkDate());
+		assertEquals("testId", result.get(2).getUsername());
+
+		assertEquals(4.4, result.get(3).getDistance());
+		assertEquals(140.0, result.get(3).getAvgHeartRate());
+		assertEquals(LocalDate.of(2024, 1, 1), result.get(3).getWalkDate());
+		assertEquals("testId", result.get(3).getUsername());
+
+		assertEquals(5.5, result.get(4).getDistance());
+		assertEquals(150.0, result.get(4).getAvgHeartRate());
+		assertEquals(LocalDate.of(2024, 1, 1), result.get(4).getWalkDate());
 		assertEquals("testId", result.get(4).getUsername());
 	}
 }
