@@ -1,5 +1,6 @@
 package kakao.mission3healthcare_backend.activity.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -48,6 +49,19 @@ public class ActivityService {
 	 */
 	public List<WalkResponse> findByUsername(String username) {
 		return walkRepository.findByUsername(username)
+				.stream()
+				.map(w -> new WalkResponse(username, w.getDistance(), w.getAvgHeartRate(), w.getWalkDate())).toList();
+	}
+
+	/**
+	 * 회원 정보와 날짜로 걷기 정보를 불러오는 메서드
+	 *
+	 * @param username 회원 ID
+	 * @param date 날짜
+	 * @return 결과
+	 */
+	public List<WalkResponse> findByUsernameAndDate(String username, LocalDate date) {
+		return walkRepository.findByUsernameAndDate(username, date)
 				.stream()
 				.map(w -> new WalkResponse(username, w.getDistance(), w.getAvgHeartRate(), w.getWalkDate())).toList();
 	}
