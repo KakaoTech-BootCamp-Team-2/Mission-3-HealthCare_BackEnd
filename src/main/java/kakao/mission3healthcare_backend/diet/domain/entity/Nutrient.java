@@ -6,9 +6,11 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import kakao.mission3healthcare_backend.common.entity.BaseEntity;
 import kakao.mission3healthcare_backend.diet.domain.NutrientType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,10 +22,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Nutrient {
+public class Nutrient extends BaseEntity {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "nutrient_id")
 	private Long id;
 
